@@ -12,5 +12,5 @@ public class AppConstants {
 
 //    public static final String MY_SECOND_QUEUE_ROUTING_KEY = "second-routing-key";
 
-    public static final String MY_SECOND_QUEUE_EXCHANGE_NAME = "second-my-exchange";
+//    public static final String MY_SECOND_QUEUE_EXCHANGE_NAME = "second-my-exchange";
 }

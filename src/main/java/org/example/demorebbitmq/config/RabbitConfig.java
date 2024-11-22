@@ -30,7 +30,7 @@ public class RabbitConfig {
 
         // Declare the exchange first
         FanoutExchange firstExchange = new FanoutExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
-        FanoutExchange secondExchange = new FanoutExchange(MY_SECOND_QUEUE_EXCHANGE_NAME, durable, autoDelete);
+        FanoutExchange secondExchange = new FanoutExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
 
         rabbitAdmin.declareExchange(firstExchange);
         rabbitAdmin.declareExchange(secondExchange);

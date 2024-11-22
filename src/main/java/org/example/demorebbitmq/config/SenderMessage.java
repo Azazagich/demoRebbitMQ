@@ -19,6 +19,6 @@ public class SenderMessage {
     public void sendMessage(String message) {
         // Specify the exchange name and routing key
         amqpTemplate.convertAndSend(MY_FIRST_QUEUE_EXCHANGE_NAME, null, message);
-        amqpTemplate.convertAndSend(MY_SECOND_QUEUE_EXCHANGE_NAME, null, message);
+        amqpTemplate.convertAndSend(MY_FIRST_QUEUE_EXCHANGE_NAME, null, message);
     }
 }
