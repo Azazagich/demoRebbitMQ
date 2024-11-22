@@ -24,8 +24,6 @@ public class RabbitScheduler {
     @Scheduled(fixedRate = 10000)
     public void write() {
         LOGGER.info("Send info");
-        senderMessage.sendMessage(MY_FIRST_QUEUE_EXCHANGE_NAME,
-                                MY_FIRST_QUEUE_ROUTING_KEY,
-                        "I'm dumb");
+        senderMessage.sendMessage("I'm dumb");
     }
 }

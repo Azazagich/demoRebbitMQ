@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.example.demorebbitmq.AppConstants;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.FanoutExchangeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,28 +25,25 @@ public class RabbitConfig {
     public void declareQueue() {
 
         boolean durable = true;
-
         boolean exclusive = false;
-
         boolean autoDelete = false;
 
         // Declare the exchange first
-        DirectExchange exchange = new DirectExchange(
-                MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
-        rabbitAdmin.declareExchange(exchange);
+        FanoutExchange firstExchange = new FanoutExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
+        FanoutExchange secondExchange = new FanoutExchange(MY_SECOND_QUEUE_EXCHANGE_NAME, durable, autoDelete);
+
+        rabbitAdmin.declareExchange(firstExchange);
+        rabbitAdmin.declareExchange(secondExchange);
 
         // Declare the queue
-        String queueName = rabbitAdmin.declareQueue(
-                new Queue(MY_FIRST_QUEUE_NAME, durable, exclusive, autoDelete));
+        Queue firstQueue = new Queue(MY_FIRST_QUEUE_NAME, durable, exclusive, autoDelete);
+        Queue secondQueue = new Queue(MY_SECOND_QUEUE_NAME, durable, exclusive, autoDelete);
+
+        rabbitAdmin.declareQueue(firstQueue);
+        rabbitAdmin.declareQueue(secondQueue);
 
         // Bind the queue to the exchange with the routing key
-        Binding binding = new Binding(
-                queueName,
-                Binding.DestinationType.QUEUE,
-                MY_FIRST_QUEUE_EXCHANGE_NAME,
-                MY_FIRST_QUEUE_ROUTING_KEY,
-                null);
-
-        rabbitAdmin.declareBinding(binding);
+        rabbitAdmin.declareBinding(BindingBuilder.bind(firstQueue).to(firstExchange));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(secondQueue).to(secondExchange));
     }
 }
