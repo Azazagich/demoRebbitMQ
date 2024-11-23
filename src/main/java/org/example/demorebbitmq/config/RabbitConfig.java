@@ -29,11 +29,11 @@ public class RabbitConfig {
         boolean autoDelete = false;
 
         // Declare the exchange first
-        FanoutExchange firstExchange = new FanoutExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
-        FanoutExchange secondExchange = new FanoutExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
+        TopicExchange firstExchange = new TopicExchange(MY_QUEUE_EXCHANGE_NAME, durable, autoDelete);
+        //TopicExchange secondExchange = new TopicExchange(MY_FIRST_QUEUE_EXCHANGE_NAME, durable, autoDelete);
 
         rabbitAdmin.declareExchange(firstExchange);
-        rabbitAdmin.declareExchange(secondExchange);
+        //rabbitAdmin.declareExchange(secondExchange);
 
         // Declare the queue
         Queue firstQueue = new Queue(MY_FIRST_QUEUE_NAME, durable, exclusive, autoDelete);
@@ -43,7 +43,7 @@ public class RabbitConfig {
         rabbitAdmin.declareQueue(secondQueue);
 
         // Bind the queue to the exchange with the routing key
-        rabbitAdmin.declareBinding(BindingBuilder.bind(firstQueue).to(firstExchange));
-        rabbitAdmin.declareBinding(BindingBuilder.bind(secondQueue).to(secondExchange));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(firstQueue).to(firstExchange).with("route.one.*"));
+        rabbitAdmin.declareBinding(BindingBuilder.bind(secondQueue).to(firstExchange).with("route.two.#"));
     }
 }

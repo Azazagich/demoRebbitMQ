@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import static org.example.demorebbitmq.AppConstants.*;
 
 @Component
 @EnableScheduling
@@ -21,9 +20,10 @@ public class RabbitScheduler {
         this.senderMessage = senderMessage;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 100000)
     public void write() {
         LOGGER.info("Send info");
-        senderMessage.sendMessage("I'm dumb");
+        senderMessage.sendMessage("I'm stupid!!!", "route.one.test");
+        senderMessage.sendMessage("I'm soooooooooooooo dumb", "route.two.anything");
     }
 }
